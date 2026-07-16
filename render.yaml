@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: blackterm-archive
+    runtime: docker
+    plan: starter
+    healthCheckPath: /health
+    envVars:
+      - key: ARCHIVE_STORAGE_DIR
+        value: /var/data
+      - key: ARCHIVE_SECURE_COOKIES
+        value: "true"
+      - key: ARCHIVE_ADMIN_KEY
+        generateValue: true
+    disk:
+      name: blackterm-data
+      mountPath: /var/data
+      sizeGB: 1

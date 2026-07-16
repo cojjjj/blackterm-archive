@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BLACKTERM // ADMIN</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <link rel="stylesheet" href="/static/admin/admin.css">
+</head>
+<body>
+  <main class="admin-shell">
+    <header class="admin-header">
+      <div>
+        <p class="eyebrow">BLACKTERM NETWORK</p>
+        <h1>ADMIN <span>// CONTROL</span></h1>
+      </div>
+      <a href="/">RETURN TO ARCHIVE</a>
+    </header>
+
+    <section id="login-panel" class="panel admin-login">
+      <p class="eyebrow">RESTRICTED ACCESS</p>
+      <h2>Administrator Authentication</h2>
+      <form id="login-form">
+        <input id="admin-key" type="password" placeholder="ENTER ADMIN KEY" required>
+        <button type="submit">AUTHENTICATE</button>
+      </form>
+      <p id="login-result" class="result"></p>
+    </section>
+
+    <section id="admin-dashboard" class="hidden">
+      <div class="admin-stats" id="stats"></div>
+
+      <div class="admin-grid">
+        <section class="panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">CASE AUTHORING</p>
+              <h2 id="form-title">Create Case</h2>
+            </div>
+            <button id="reset-form" type="button">NEW CASE</button>
+          </div>
+
+          <form id="case-form" class="case-form">
+            <div class="field-row">
+              <label>Case ID<input name="id" placeholder="case-002" required></label>
+              <label>Sequence<input name="sequence" type="number" min="1" required></label>
+            </div>
+
+            <div class="field-row">
+              <label>Slug<input name="slug" placeholder="unauthorized-access" required></label>
+              <label>Difficulty<input name="difficulty" type="number" min="1" max="10" value="3" required></label>
+            </div>
+
+            <label>Title<input name="title" required></label>
+            <label>Category<input name="category" placeholder="SOC investigation" required></label>
+            <label>Required solved nodes<input name="requires_solved_nodes" type="number" min="0" value="0"></label>
+            <label>Briefing<textarea name="briefing" rows="6" required></textarea></label>
+            <label>Reward message<textarea name="reward_message" rows="3" required></textarea></label>
+
+            <div class="builder-heading">
+              <h3>Objectives</h3>
+              <button id="add-objective" type="button">ADD OBJECTIVE</button>
+            </div>
+            <div id="objectives"></div>
+
+            <div class="builder-heading">
+              <h3>Evidence</h3>
+              <button id="add-evidence" type="button">ADD EVIDENCE</button>
+            </div>
+            <div id="evidence"></div>
+
+            <button type="submit">PUBLISH CASE</button>
+            <p id="case-result" class="result"></p>
+          </form>
+        </section>
+
+        <section class="panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">PUBLISHED CASES</p>
+              <h2>Case Registry</h2>
+            </div>
+          </div>
+          <div id="case-list"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <template id="objective-template">
+    <article class="builder-card objective-card">
+      <button class="remove-card" type="button">REMOVE</button>
+      <label>Objective ID<input data-field="id" required></label>
+      <label>Prompt<textarea data-field="prompt" rows="2" required></textarea></label>
+      <label>Correct answer<input data-field="answer" required></label>
+    </article>
+  </template>
+
+  <template id="evidence-template">
+    <article class="builder-card evidence-card">
+      <button class="remove-card" type="button">REMOVE</button>
+      <label>Artifact<select data-field="artifact_id" required></select></label>
+      <label>Display label<input data-field="label" required></label>
+      <label>Description<textarea data-field="description" rows="2"></textarea></label>
+    </article>
+  </template>
+
+  <script type="module" src="/static/admin/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BLACKTERM OS // THE ARCHIVE</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <link rel="stylesheet" href="/static/os/os.css">
+</head>
+<body>
+  <div id="crt-poweron" class="crt-poweron hidden" aria-hidden="true">
+    <div class="crt-line"></div>
+    <div class="crt-bloom"></div>
+    <div class="crt-static"></div>
+  </div>
+
+  <section id="boot-sequence" class="boot-sequence hidden">
+    <div class="boot-frame">
+      <p class="eyebrow">BLACKTERM NETWORK</p>
+      <h2>RESTORING SESSION</h2>
+      <div id="boot-lines" class="boot-lines"></div>
+      <div class="boot-progress"><i id="boot-progress-bar"></i></div>
+      <div id="boot-summary" class="boot-summary"></div>
+      <button id="boot-continue" class="hidden">PRESS ENTER</button>
+    </div>
+  </section>
+
+  <section id="gate" class="os-gate">
+    <div class="os-gate-card">
+      <p class="eyebrow">BLACKTERM NETWORK</p>
+      <h1>BLACKTERM <span>// OS</span></h1>
+      <p>&gt; Unknown observer detected.</p>
+      <p class="os-muted">Observation is the first key. Identity is the second.</p>
+      <button id="begin-button">POWER ON</button>
+    </div>
+  </section>
+
+  <main id="desktop" class="bt-desktop hidden os-startup-pending" aria-label="BLACKTERM OS desktop">
+
+    <section id="desktop-bootstrap" class="desktop-bootstrap" aria-live="polite">
+      <div class="desktop-bootstrap-card">
+        <div class="bootstrap-heading">
+          <span>BLACKTERM OS</span>
+          <strong>BOOTSTRAP SEQUENCE</strong>
+        </div>
+        <div id="bootstrap-log" class="bootstrap-log"></div>
+        <div class="bootstrap-progress">
+          <i id="bootstrap-progress-bar"></i>
+        </div>
+        <div class="bootstrap-footer">
+          <span id="bootstrap-stage">INITIALIZING</span>
+          <strong id="bootstrap-percent">0%</strong>
+        </div>
+      </div>
+    </section>
+
+    <div class="desktop-wallpaper">
+
+      <div class="void-orbit orbit-one"></div>
+      <div class="void-orbit orbit-two"></div>
+      <div class="void-sweep"></div>
+      <svg id="relay-links" class="relay-links" viewBox="0 0 1000 700" preserveAspectRatio="none">
+        <path id="link-a-b" d="M280 210 C420 130, 590 150, 725 240"></path>
+        <path id="link-b-d" d="M725 240 C790 350, 760 470, 690 530"></path>
+        <path id="link-d-c" d="M690 530 C560 610, 430 600, 350 510"></path>
+        <path id="link-c-a" d="M350 510 C260 430, 235 320, 280 210"></path>
+      </svg>
+      <div class="packet packet-1"></div>
+      <div class="packet packet-2"></div>
+      <div class="relay-node node-a"><i></i><span>R-01</span></div>
+      <div class="relay-node node-b"><i></i><span>R-07</span></div>
+      <div class="relay-node node-c"><i></i><span>R-13</span></div>
+      <div class="relay-node node-d"><i></i><span>R-19</span></div>
+      <div class="void-dust"></div>
+
+      <div class="wallpaper-mark">
+        <span>BLACKTERM</span>
+        <strong>// THE ARCHIVE</strong>
+        <small>RECOVERED INTELLIGENCE WORKSTATION</small>
+      </div>
+    </div>
+
+    <header class="os-topbar">
+      <div class="os-brand">BLACKTERM OS</div>
+      <div class="os-system-state">
+        <span><i></i><strong id="living-heartbeat">ONLINE</strong></span>
+        <span>MAIL <strong id="living-mail-count">0</strong></span>
+        <span>EVENTS <strong id="living-event-count">0</strong></span>
+        <span>INTEGRITY <strong id="living-integrity">100%</strong></span>
+      </div>
+      <div class="os-user">
+        <span id="os-codename">OBS-00000</span>
+        <button id="ambient-toggle" type="button">AUDIO: OFF</button>
+      </div>
+    </header>
+
+    <section id="desktop-icons" class="desktop-icons">
+      <button class="desktop-icon" data-open-app="archive">
+        <span class="icon-glyph">A</span><strong>Archive</strong>
+      </button>
+      <button class="desktop-icon" data-open-app="terminal">
+        <span class="icon-glyph">&gt;_</span><strong>Terminal</strong>
+      </button>
+      <button class="desktop-icon" data-open-app="explorer">
+        <span class="icon-glyph">▣</span><strong>Files</strong>
+      </button>
+      <button class="desktop-icon" data-open-app="mail">
+        <span class="icon-glyph">✉</span><strong>Mail</strong>
+      </button>
+
+      <button class="desktop-icon extended-app" data-open-app="processes">
+        <span class="icon-glyph">▥</span><strong>Processes</strong>
+      </button>
+      <button class="desktop-icon extended-app" data-open-app="relay">
+        <span class="icon-glyph">⌁</span><strong>Relay Monitor</strong>
+      </button>
+      <button class="desktop-icon extended-app" data-open-app="worldmap">
+        <span class="icon-glyph">◎</span><strong>World Map</strong>
+      </button>
+      <button class="desktop-icon extended-app" data-open-app="knowledge">
+        <span class="icon-glyph">K</span><strong>Knowledge</strong>
+      </button>
+      <button class="desktop-icon extended-app" data-open-app="editor">
+        <span class="icon-glyph">✦</span><strong>Puzzle Editor</strong>
+      </button>
+      <button class="desktop-icon extended-app" data-open-app="audio">
+        <span class="icon-glyph">♫</span><strong>Audio</strong>
+      </button>
+      <button class="desktop-icon extended-app" data-open-app="images">
+        <span class="icon-glyph">▧</span><strong>Images</strong>
+      </button>
+      <button class="desktop-icon extended-app" data-open-app="hex">
+        <span class="icon-glyph">0x</span><strong>Hex Viewer</strong>
+      </button>
+      <button class="desktop-icon extended-app" data-open-app="logs">
+        <span class="icon-glyph">≡</span><strong>Logs</strong>
+      </button>
+
+      <button class="desktop-icon extended-app generator-icon" data-open-app="generator">
+        <span class="icon-glyph">∞</span><strong>Generator</strong>
+      </button>
+
+      <button class="desktop-icon extended-app" data-open-app="search">
+        <span class="icon-glyph">⌕</span><strong>Search</strong>
+      </button>
+
+    </section>
+
+    <section id="window-layer" class="window-layer"></section>
+    <aside id="toast-layer" class="toast-layer" aria-live="polite"></aside>
+
+    <aside id="start-menu" class="start-menu hidden">
+      <div class="start-profile">
+        <span id="start-codename">OBS-00000</span>
+        <small>AUTHORIZED OBSERVER</small>
+      </div>
+      <button data-open-app="archive">Archive</button>
+      <button data-open-app="terminal">Terminal</button>
+      <button data-open-app="explorer">File Explorer</button>
+      <button data-open-app="mail">Mail</button>
+
+      <button data-open-app="processes">Process Monitor</button>
+      <button data-open-app="relay">Relay Monitor</button>
+      <button data-open-app="worldmap">World Map</button>
+      <button data-open-app="knowledge">Knowledge Base</button>
+      <button data-open-app="editor">Puzzle Editor</button>
+      <button data-open-app="audio">Audio Console</button>
+      <button data-open-app="images">Image Viewer</button>
+      <button data-open-app="hex">Hex Viewer</button>
+      <button data-open-app="logs">Log Viewer</button>
+      <button data-open-app="generator">Investigation Generator</button>
+      <button data-open-app="search">Search Index</button>
+
+      <a href="/admin">Archive Studio</a>
+    </aside>
+
+    <footer class="taskbar">
+      <button id="start-button" class="start-button">BT</button>
+      <div id="task-buttons" class="task-buttons"></div>
+      <div class="taskbar-status">
+        <span id="task-signal">SIGNAL 97%</span>
+        <time id="os-clock">00:00:00 UTC</time>
+      </div>
+    </footer>
+  </main>
+
+  <template id="window-template">
+    <article class="os-window">
+      <header class="window-titlebar">
+        <div class="window-title"></div>
+        <div class="window-controls">
+          <button data-window-action="minimize" aria-label="Minimize">—</button>
+          <button data-window-action="maximize" aria-label="Maximize">□</button>
+          <button data-window-action="close" aria-label="Close">×</button>
+        </div>
+      </header>
+      <div class="window-content"></div>
+      <div class="window-resize-handle" aria-hidden="true"></div>
+    </article>
+  </template>
+
+  <template id="terminal-app-template">
+    <section class="terminal-app">
+      <div id="terminal-output" class="terminal-output" aria-live="polite"></div>
+      <form id="terminal-form" class="terminal-form" autocomplete="off">
+        <label for="terminal-input">OBS@ARCHIVE:~$</label>
+        <input id="terminal-input" spellcheck="false" autocapitalize="off" autocomplete="off">
+      </form>
+      <p class="terminal-help">Type <strong>help</strong>. Use ↑/↓ and Tab.</p>
+    </section>
+  </template>
+
+  <!-- archive-node-002: dGhlIG1hY2hpbmUgcmVtZW1iZXJz -->
+  <!-- archive-node-003-source: NOTHING -->
+  <script type="module" src="/static/app.js"></script>
+</body>
+</html>

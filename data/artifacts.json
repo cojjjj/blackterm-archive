@@ -1,0 +1,62 @@
+[
+  {
+    "id": "signal-001",
+    "filename": "signal_001.png",
+    "virtual_path": "/archive/artifacts/signal_001.png",
+    "title": "Signal 001",
+    "description": "Recovered monochrome image transmission.",
+    "mime_type": "image/png",
+    "category": "image",
+    "requires_solved": 0,
+    "size": 13824,
+    "sha256": "a238e8aeffec1b81f0626a1855c68e41779e40836e1fbd182c15f523d54ac1e1"
+  },
+  {
+    "id": "relay-evidence",
+    "filename": "relay_evidence.zip",
+    "virtual_path": "/archive/artifacts/relay_evidence.zip",
+    "title": "Relay Evidence",
+    "description": "Compressed evidence recovered from Relay 13.",
+    "mime_type": "application/zip",
+    "category": "archive",
+    "requires_solved": 1,
+    "size": 545,
+    "sha256": "dec0aac48e4ebebcc9be9a2ea4db150ae1137c0d3a9f1e3c9fcfa04a08855b45"
+  },
+  {
+    "id": "capture-001",
+    "filename": "capture_001.pcap",
+    "virtual_path": "/archive/artifacts/capture_001.pcap",
+    "title": "Capture 001",
+    "description": "Synthetic network capture containing one preserved transmission.",
+    "mime_type": "application/vnd.tcpdump.pcap",
+    "category": "network",
+    "requires_solved": 2,
+    "size": 126,
+    "sha256": "80d792ab64de1364f93e77d4e98e940b245e88754b5f5eedb00c411f16708c5f"
+  },
+  {
+    "id": "observer-check",
+    "filename": "observer_check",
+    "virtual_path": "/archive/artifacts/observer_check",
+    "title": "Observer Check",
+    "description": "Harmless local reverse-engineering challenge binary.",
+    "mime_type": "application/octet-stream",
+    "category": "binary",
+    "requires_solved": 3,
+    "size": 16040,
+    "sha256": "861bf5e3c0ca4a6ea09206d92f7d95c5b27a306b761bf6f6ff70c80d22ae6b95"
+  },
+  {
+    "id": "echo-transmission",
+    "filename": "echo_transmission.wav",
+    "virtual_path": "/archive/artifacts/echo_transmission.wav",
+    "title": "Echo Transmission",
+    "description": "Recovered low-frequency relay transmission for waveform analysis.",
+    "mime_type": "audio/wav",
+    "category": "audio",
+    "requires_solved": 0,
+    "size": 176444,
+    "sha256": "2060e5e8818faa982d615da649fae32d0a6d5caf71b081421b0c2ea188be65ef"
+  }
+]

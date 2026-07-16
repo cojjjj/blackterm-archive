@@ -1,0 +1,17 @@
+[
+  {
+    "name": "last_session.log",
+    "type": "file",
+    "content": "OBSERVER: OBS-66142\nSESSION STATUS: INTERRUPTED\n\n03:12:09  grep observer /\n03:12:14  cd /archive/.forgotten\n03:12:20  cat final.txt\n03:12:27  logout\n03:12:31  no response\n03:12:44  signal lost\n"
+  },
+  {
+    "name": "relay_warning.txt",
+    "type": "file",
+    "content": "RELAY NOTICE\n\nR-13 has reported an impossible timestamp.\nDo not assume the newest record is the most recent event.\n"
+  },
+  {
+    "name": "operator_note.txt",
+    "type": "file",
+    "content": "Operator,\n\nIf the relay map begins drawing lines by itself,\ndo not terminate the process.\n\n- ECHO\n"
+  }
+]

@@ -1,0 +1,45 @@
+[
+  {
+    "id": "archive-001",
+    "sequence": 1,
+    "title": "The First Observation",
+    "category": "encoding",
+    "difficulty": 1,
+    "briefing": "The opening transmission was preserved exactly as received. Meaning rarely disappears; it merely changes its shape.",
+    "artifact": "54 48 45 20 45 59 45 20 4F 50 45 4E 53",
+    "requires": [],
+    "salt": "blackterm-archive-node-001",
+    "answer_hash": "db402aa53b28aa105b325cd3fc8eeaab907d51708fee6d59f0efa07b57297463",
+    "success_message": "You noticed what others ignored. A second node has awakened."
+  },
+  {
+    "id": "archive-002",
+    "sequence": 2,
+    "title": "A Message Beneath",
+    "category": "source",
+    "difficulty": 2,
+    "briefing": "Pages speak twice: once to the observer and once to the machine. Search where presentation ends and structure begins.",
+    "artifact": null,
+    "requires": [
+      "archive-001"
+    ],
+    "salt": "blackterm-archive-node-002",
+    "answer_hash": "24375baca3a0cd52f6ff739c25f0119508418cf10fd2c78498d7e74e2c3070f2",
+    "success_message": "Structure acknowledged. The path continues."
+  },
+  {
+    "id": "archive-003",
+    "sequence": 3,
+    "title": "The Hidden Surface",
+    "category": "web investigation",
+    "difficulty": 3,
+    "briefing": "The visible page is only the surface. Five fragments are scattered across places the ordinary observer ignores. Recover them. Preserve their order.",
+    "artifact": "FRAGMENTS REQUIRED: 5\n\nSOURCE // STYLE // CONSOLE // ROBOTS // RESTRICTED",
+    "requires": [
+      "archive-002"
+    ],
+    "salt": "blackterm-archive-node-003",
+    "answer_hash": "8f73671e21d85872c4ffa3bd2e80fd591cabc912f716b1e56fd3c6f18361684e",
+    "success_message": "Five surfaces. One sentence. You are beginning to see."
+  }
+]

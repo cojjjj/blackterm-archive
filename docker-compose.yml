@@ -1,0 +1,14 @@
+services:
+  archive:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      ARCHIVE_STORAGE_DIR: /app/storage
+      ARCHIVE_ADMIN_KEY: change-this-before-launch
+      ARCHIVE_SECURE_COOKIES: "false"
+    volumes:
+      - archive-storage:/app/storage
+
+volumes:
+  archive-storage:

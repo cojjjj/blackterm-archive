@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /restricted/
+# archive-node-003-robots: BURIED

@@ -1,0 +1,51 @@
+[
+  {
+    "id": "case-001",
+    "sequence": 1,
+    "slug": "dead-relay",
+    "title": "Dead Relay",
+    "difficulty": 2,
+    "category": "digital forensics",
+    "status": "active",
+    "requires_solved_nodes": 0,
+    "briefing": "Relay 13 transmitted for less than fifteen seconds before going dark. Recovered evidence contains a timestamp that cannot be correct and a message preserved inside network traffic. Determine what the relay retained.",
+    "objectives": [
+      {
+        "id": "impossible-year",
+        "prompt": "What impossible year appears in the recovered relay log?",
+        "salt": "case-001-objective-01",
+        "answer_hash": "efe9d3c0b265b217bd29cc01e6433b7557f6591bfe1729874e1c531a61b7ecd7"
+      },
+      {
+        "id": "packet-message",
+        "prompt": "Complete the preserved packet message: THE PACKET ________",
+        "salt": "case-001-objective-02",
+        "answer_hash": "fa42c2926d7e0afce8bd8df6628b65fc4a7f3e446883421af7af8cc7c740f710"
+      },
+      {
+        "id": "retained-message",
+        "prompt": "Decode fragment.txt. What does the relay retain?",
+        "salt": "case-001-objective-03",
+        "answer_hash": "e2f204aa023eed0d3bb335c2cfa9dde22c717ca62a6cecab066ba4377d78d39e"
+      }
+    ],
+    "evidence": [
+      {
+        "artifact_id": "relay-evidence",
+        "label": "relay_evidence.zip",
+        "description": "Recovered relay logs and encoded fragment."
+      },
+      {
+        "artifact_id": "capture-001",
+        "label": "capture_001.pcap",
+        "description": "Synthetic packet capture from Relay 13."
+      }
+    ],
+    "reward": {
+      "message": "CASE RESOLVED. Relay 13 retained what the observer forgot.",
+      "unlocks": [
+        "case-001-report.txt"
+      ]
+    }
+  }
+]

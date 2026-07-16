@@ -1,0 +1,7 @@
+BLACKTERM // THE ARCHIVE v1.0.1 STARTUP FIX
+
+Copy the app folder into your existing blackterm_archive project and replace the file.
+
+Fixes:
+- IndentationError near app/main.py line 423
+- observer_mail INSERT placeholder mismatch
