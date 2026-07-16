@@ -693,3 +693,11 @@ Production deployment files are included:
 BLACKTERM requires a persistent storage volume because it writes SQLite data,
 generated investigations, JSON world state, mail state, and generated artifacts
 at runtime. Set `ARCHIVE_STORAGE_DIR` to the mounted volume path.
+
+
+## Analytics
+
+Google Analytics 4 is installed with measurement ID `G-DTYY7LYPPR`.
+The analytics helper records page visits and high-level interface events such as
+application opens. It intentionally does not send observer IDs, answers, mail
+contents, terminal commands, filenames, or evidence contents.
