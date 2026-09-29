@@ -54,8 +54,8 @@ CASES_PATH = DATA_DIR / "cases.json"
 DESKTOP_STORY_PATH = DATA_DIR / "desktop_story.json"
 GENERATED_INVESTIGATIONS_PATH = DATA_DIR / "generated_investigations.json"
 
-ADMIN_KEY = os.getenv("ARCHIVE_ADMIN_KEY", "blackterm-local-admin")
-SECURE_COOKIES = os.getenv("ARCHIVE_SECURE_COOKIES", "false").lower() in {
+ADMIN_KEY = os.getenv("ARCHIVE_ADMIN_KEY", "" if IS_VERCEL else "blackterm-local-admin")
+SECURE_COOKIES = os.getenv("ARCHIVE_SECURE_COOKIES", "true" if IS_VERCEL else "false").lower() in {
     "1",
     "true",
     "yes",
@@ -266,7 +266,7 @@ def init_db() -> None:
 
 def require_admin(request: Request) -> None:
     supplied = request.headers.get("X-Archive-Admin-Key", "")
-    if not secrets.compare_digest(supplied, ADMIN_KEY):
+    if not ADMIN_KEY or not secrets.compare_digest(supplied, ADMIN_KEY):
         raise HTTPException(status_code=401, detail="Admin authorization rejected.")
 
 
@@ -908,7 +908,8 @@ def index() -> FileResponse:
 @app.post("/api/session")
 def create_session(response: Response) -> dict[str, str]:
     token = secrets.token_urlsafe(32)
-    codename = f"OBS-{secrets.randbelow(90000) + 10000}"
+    identity_number = int(hashlib.sha256(token.encode("utf-8")).hexdigest()[:8], 16) % 90000 + 10000
+    codename = f"OBS-{identity_number}"
 
     with db() as connection:
         connection.execute(
@@ -1051,7 +1052,7 @@ def admin_page() -> FileResponse:
 
 @app.post("/api/admin/login")
 def admin_login(payload: AdminLogin, response: Response) -> dict[str, bool]:
-    if not secrets.compare_digest(payload.key, ADMIN_KEY):
+    if not ADMIN_KEY or not secrets.compare_digest(payload.key, ADMIN_KEY):
         raise HTTPException(status_code=401, detail="Invalid admin key.")
 
     response.set_cookie(
@@ -1067,7 +1068,7 @@ def admin_login(payload: AdminLogin, response: Response) -> dict[str, bool]:
 
 def require_admin_cookie(request: Request) -> None:
     supplied = request.cookies.get("archive_admin", "")
-    if not secrets.compare_digest(supplied, ADMIN_KEY):
+    if not ADMIN_KEY or not secrets.compare_digest(supplied, ADMIN_KEY):
         raise HTTPException(status_code=401, detail="Admin authorization rejected.")
 
 
@@ -1957,3 +1958,13 @@ def record_terminal_event(
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "online"}
+
+
+@app.get("/api/system/status")
+def system_status() -> dict[str, Any]:
+    return {
+        "version": "2.0-control-room",
+        "storage": "temporary" if IS_VERCEL else "local",
+        "progress_persistent": not IS_VERCEL,
+        "admin_configured": bool(ADMIN_KEY),
+    }

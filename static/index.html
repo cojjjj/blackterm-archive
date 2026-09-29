@@ -19,6 +19,7 @@
   </script>
   <link rel="stylesheet" href="/static/styles.css">
   <link rel="stylesheet" href="/static/os/os.css">
+  <link rel="stylesheet" href="/static/os/control-room.css">
 </head>
 <body>
   <div id="crt-poweron" class="crt-poweron hidden" aria-hidden="true">
@@ -42,9 +43,12 @@
     <div class="os-gate-card">
       <p class="eyebrow">BLACKTERM NETWORK</p>
       <h1>BLACKTERM <span>// OS</span></h1>
-      <p>&gt; Unknown observer detected.</p>
+      <div class="gate-classification">CLASSIFIED // OBSERVER ACCESS</div><p>&gt; A signal survived. Follow it.</p>
       <p class="os-muted">Observation is the first key. Identity is the second.</p>
-      <button id="begin-button">POWER ON</button>
+      <button id="begin-button">ENTER THE ARCHIVE →</button>
+      <p class="gate-caption">DECODE SIGNALS · RECOVER EVIDENCE · CONNECT THE TRUTH</p>
+      <label class="gate-fast"><input id="fast-boot" type="checkbox" checked> Fast startup</label>
+      <p id="gate-error" role="alert"></p>
     </div>
   </section>
 
@@ -94,7 +98,8 @@
     </div>
 
     <header class="os-topbar">
-      <div class="os-brand">BLACKTERM OS</div>
+      <div class="os-brand">BLACKTERM <small>// ARCHIVE</small></div>
+      <button id="launcher-button" class="launcher-button">⌕ Launch <kbd>Ctrl K</kbd></button>
       <div class="os-system-state">
         <span><i></i><strong id="living-heartbeat">ONLINE</strong></span>
         <span>MAIL <strong id="living-mail-count">0</strong></span>
@@ -108,6 +113,9 @@
     </header>
 
     <section id="desktop-icons" class="desktop-icons">
+      <button class="desktop-icon" data-open-app="mission"><span class="icon-glyph">◈</span><strong>Mission Control</strong></button>
+      <button class="desktop-icon" data-open-app="notebook"><span class="icon-glyph">✎</span><strong>Notebook</strong></button>
+      <button class="desktop-icon" data-open-app="settings"><span class="icon-glyph">⚙</span><strong>Settings</strong></button>
       <button class="desktop-icon" data-open-app="archive">
         <span class="icon-glyph">A</span><strong>Archive</strong>
       </button>
@@ -167,6 +175,9 @@
         <span id="start-codename">OBS-00000</span>
         <small>AUTHORIZED OBSERVER</small>
       </div>
+      <button data-open-app="mission">Mission Control</button>
+      <button data-open-app="notebook">Investigation Notebook</button>
+      <button data-open-app="settings">Display Settings</button>
       <button data-open-app="archive">Archive</button>
       <button data-open-app="terminal">Terminal</button>
       <button data-open-app="explorer">File Explorer</button>

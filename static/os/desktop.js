@@ -1,3 +1,4 @@
+import { installControlRoom } from "./control-room.js";
 import { WindowManager } from "./window-manager.js";
 import { AppRegistry } from "./apps.js";
 
@@ -6,6 +7,7 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 let notificationAudioContext = null;
 
 function playNotificationTone(kind = "normal") {
+  if (document.documentElement.classList.contains("archive-calm") || document.querySelector("#ambient-toggle")?.textContent.includes("OFF")) return;
   try {
     notificationAudioContext = notificationAudioContext || new AudioContext();
     const frequencies = kind === "warning" ? [330, 250] : [640, 860];
@@ -29,12 +31,17 @@ function playNotificationTone(kind = "normal") {
 }
 
 function showToast(title, detail, tone = "normal") {
+  if (document.documentElement.classList.contains("archive-calm") || document.hidden) return;
   const layer = document.querySelector("#toast-layer");
   if (!layer) return;
 
   const toast = document.createElement("article");
   toast.className = `os-toast ${tone}`;
-  toast.innerHTML = `<span>${title}</span><p>${detail}</p>`;
+  const heading = document.createElement("span");
+  heading.textContent = title;
+  const description = document.createElement("p");
+  description.textContent = detail;
+  toast.append(heading, description);
   layer.appendChild(toast);
   playNotificationTone(tone);
 
@@ -289,7 +296,7 @@ async function runDesktopBootstrap({ api, apps, desktop, storyIcons }) {
     await typeBootstrapLine(log, message[0], message[1]);
     icon.classList.add("startup-icon-energize");
     await revealElement(icon, 65);
-    setBootstrapProgress(79 + index * 3, "APPLICATIONS");
+    setBootstrapProgress(76 + Math.round((index + 1) / coreIcons.length * 14), "APPLICATIONS");
   }
 
   await typeBootstrapLine(
@@ -346,6 +353,7 @@ async function runDesktopBootstrap({ api, apps, desktop, storyIcons }) {
 
 export async function mountDesktop(api) {
   const desktop = document.querySelector("#desktop");
+  const [me, desktopFiles] = await Promise.all([api("/api/me"), api("/api/os/desktop-files")]);
 
   const manager = new WindowManager({
     layer: document.querySelector("#window-layer"),
@@ -354,18 +362,16 @@ export async function mountDesktop(api) {
   });
 
   const apps = new AppRegistry({ api, windows: manager });
+  installControlRoom({ apps, manager, api });
   const startMenu = document.querySelector("#start-menu");
   const startButton = document.querySelector("#start-button");
 
   document.querySelectorAll("[data-open-app]").forEach((button) => {
-    button.addEventListener("dblclick", () => {
-      if (!desktop.classList.contains("os-ready")) return;
-      apps.open(button.dataset.openApp);
-    });
+
 
     button.addEventListener("click", () => {
       if (!desktop.classList.contains("os-ready")) return;
-      if (button.closest("#start-menu")) {
+      if (button.closest("#start-menu") || button.closest("#desktop-icons")) {
         apps.open(button.dataset.openApp);
         startMenu.classList.add("hidden");
       }
@@ -383,7 +389,6 @@ export async function mountDesktop(api) {
     }
   });
 
-  const me = await api("/api/me");
   document.querySelector("#os-codename").textContent = me.codename;
   document.querySelector("#start-codename").textContent = me.codename;
 
@@ -397,15 +402,16 @@ export async function mountDesktop(api) {
   const signal = 89 + (Number(me.codename.replace(/\D/g, "")) % 11);
   document.querySelector("#task-signal").textContent = `SIGNAL ${signal}%`;
 
-  const desktopFiles = await api("/api/os/desktop-files");
   const desktopIcons = document.querySelector("#desktop-icons");
   const storyIcons = [];
 
   for (const file of desktopFiles) {
     const button = document.createElement("button");
     button.className = "desktop-icon story-file-icon startup-item";
-    button.innerHTML = `<span class="icon-glyph">▤</span><strong>${file.name}</strong>`;
-    button.addEventListener("dblclick", () => {
+    const glyph = document.createElement("span"); glyph.className = "icon-glyph"; glyph.textContent = "▤";
+    const name = document.createElement("strong"); name.textContent = file.name;
+    button.append(glyph, name);
+    button.addEventListener("click", () => {
       if (!desktop.classList.contains("os-ready")) return;
       apps.openTextFile?.(file.name, file.content);
     });
@@ -416,7 +422,12 @@ export async function mountDesktop(api) {
   mountAmbientNotifications();
   mountScannerIllumination();
   await applyLivingWorldState(api);
-  await runDesktopBootstrap({ api, apps, desktop, storyIcons });
+  if (document.documentElement.dataset.fastBoot === "true") {
+    desktop.classList.remove("os-startup-pending", "os-booting");
+    desktop.classList.add("os-ready");
+    document.querySelectorAll(".desktop-icon, .os-topbar, .taskbar, .desktop-wallpaper, .os-system-state > span, .os-user").forEach(el => el.classList.add("startup-revealed", "startup-received"));
+    apps.open("mission");
+  } else { await runDesktopBootstrap({ api, apps, desktop, storyIcons }); }
 
   return { manager, apps };
 }

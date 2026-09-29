@@ -8,6 +8,18 @@ export class WindowManager {
     this.windows = new Map();
     this.topZ = 20;
     this.cascade = 0;
+    window.addEventListener("resize", () => {
+      for (const record of this.windows.values()) this.clamp(record.element);
+    });
+  }
+
+  clamp(element) {
+    const width = Math.min(parseFloat(element.style.width) || 760, Math.max(240, window.innerWidth - 16));
+    const height = Math.min(parseFloat(element.style.height) || 520, Math.max(180, window.innerHeight - 100));
+    element.style.width = `${width}px`;
+    element.style.height = `${height}px`;
+    element.style.left = `${Math.max(8, Math.min(parseFloat(element.style.left) || 8, window.innerWidth - width - 8))}px`;
+    element.style.top = `${Math.max(52, Math.min(parseFloat(element.style.top) || 52, window.innerHeight - height - 48))}px`;
   }
 
   loadLayouts() {
@@ -33,10 +45,11 @@ export class WindowManager {
       maximized: Boolean(maximized),
       z: Number(element.style.zIndex || 0),
     };
-    localStorage.setItem(this.storageKey, JSON.stringify(layouts));
+    try { localStorage.setItem(this.storageKey, JSON.stringify(layouts)); } catch { /* Storage is optional. */ }
   }
 
   tone(frequency = 420, duration = 0.035, volume = 0.018) {
+    if (document.documentElement.classList.contains("archive-calm") || document.querySelector("#ambient-toggle")?.textContent.includes("OFF")) return;
     try {
       this.audioContext = this.audioContext || new AudioContext();
       const oscillator = this.audioContext.createOscillator();
@@ -68,7 +81,7 @@ export class WindowManager {
     const fragment = this.template.content.cloneNode(true);
     const element = fragment.querySelector(".os-window");
     element.dataset.windowId = id;
-    element.classList.add(`app-window-${id}`);
+    element.classList.add(`app-window-${String(id).replace(/[^a-zA-Z0-9_-]/g, "-")}`);
     const savedLayout = this.loadLayout(id);
     element.style.width = savedLayout?.width || `${Math.min(width, window.innerWidth - 30)}px`;
     element.style.height = savedLayout?.height || `${Math.min(height, window.innerHeight - 90)}px`;
@@ -85,6 +98,7 @@ export class WindowManager {
     if (content instanceof Node) body.appendChild(content);
     else body.innerHTML = content;
 
+    this.clamp(element);
     this.layer.appendChild(element);
 
     const taskButton = document.createElement("button");
@@ -107,6 +121,7 @@ export class WindowManager {
       body,
       taskButton,
       maximized: Boolean(savedLayout?.maximized),
+      restore: { left: element.style.left, top: element.style.top, width: element.style.width, height: element.style.height },
     };
     this.windows.set(id, record);
 
@@ -121,7 +136,12 @@ export class WindowManager {
         setTimeout(() => element.classList.remove("window-opening"), 320);
       });
     });
-    if (onOpen) onOpen(record);
+    if (onOpen) Promise.resolve().then(() => onOpen(record)).catch(error => {
+      const message = document.createElement("p");
+      message.className = "room-status";
+      message.textContent = error.message || "Application unavailable. Close and reopen to retry.";
+      body.append(message);
+    });
 
     return record;
   }
@@ -201,6 +221,7 @@ export class WindowManager {
       }
 
       record.maximized = !record.maximized;
+      this.saveLayout(record);
       this.focus(element);
 
       setTimeout(() => {
@@ -208,6 +229,9 @@ export class WindowManager {
       }, 280);
     });
 
+    titlebar.addEventListener("dblclick", (event) => {
+      if (!event.target.closest(".window-controls")) element.querySelector('[data-window-action="maximize"]').click();
+    });
     this.makeDraggable(element, titlebar, record);
     this.makeResizable(element, resize, record);
   }
@@ -271,8 +295,8 @@ export class WindowManager {
 
     handle.addEventListener("pointermove", (event) => {
       if (!handle.hasPointerCapture(event.pointerId)) return;
-      element.style.width = `${Math.max(420, width + event.clientX - startX)}px`;
-      element.style.height = `${Math.max(280, height + event.clientY - startY)}px`;
+      element.style.width = `${Math.min(window.innerWidth - element.offsetLeft - 8, Math.max(Math.min(420, window.innerWidth - 16), width + event.clientX - startX))}px`;
+      element.style.height = `${Math.min(window.innerHeight - element.offsetTop - 48, Math.max(180, height + event.clientY - startY))}px`;
     });
 
     handle.addEventListener("pointerup", () => this.saveLayout(record));
