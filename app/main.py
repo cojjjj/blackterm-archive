@@ -22,14 +22,25 @@ STATIC_DIR = BASE_DIR / "static"
 SEED_DATA_DIR = BASE_DIR / "data"
 SEED_ARTIFACTS_DIR = BASE_DIR / "artifacts"
 
-# Local development uses the project directories. Production can point this
-# at a persistent volume such as /app/storage.
-STORAGE_ROOT = Path(os.getenv("ARCHIVE_STORAGE_DIR", str(BASE_DIR))).resolve()
+# Local development uses the project directories.
+# Container deployments can set ARCHIVE_STORAGE_DIR to a persistent volume.
+# Vercel's application directory is read-only, so use /tmp for runtime files.
+IS_VERCEL = bool(os.getenv("VERCEL"))
+configured_storage = os.getenv("ARCHIVE_STORAGE_DIR")
+
+if configured_storage:
+    STORAGE_ROOT = Path(configured_storage).resolve()
+elif IS_VERCEL:
+    STORAGE_ROOT = Path("/tmp/blackterm-archive")
+else:
+    STORAGE_ROOT = BASE_DIR
+
 DATA_DIR = (
     STORAGE_ROOT / "data"
     if STORAGE_ROOT != BASE_DIR
     else SEED_DATA_DIR
 )
+
 ARTIFACTS_DIR = (
     STORAGE_ROOT / "artifacts"
     if STORAGE_ROOT != BASE_DIR
@@ -143,13 +154,20 @@ def bootstrap_persistent_storage() -> None:
 
 
 def db() -> sqlite3.Connection:
-    connection = sqlite3.connect(DB_PATH)
+    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+
+    connection = sqlite3.connect(
+        DB_PATH,
+        timeout=30,
+    )
     connection.row_factory = sqlite3.Row
+    connection.execute("PRAGMA foreign_keys = ON")
+    connection.execute("PRAGMA busy_timeout = 30000")
     return connection
 
 
 def init_db() -> None:
-    DATA_DIR.mkdir(exist_ok=True)
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
 
     with db() as connection:
         connection.execute(
