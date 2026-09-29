@@ -84,7 +84,7 @@ export function installControlRoom({ apps, manager, api }) {
     function save() { applyPreferences(); status.textContent = write('blackterm_display_v2', preferences) ? 'Preferences saved.' : 'Applied for this session; browser storage unavailable.'; }
     for (const [id, name] of [['violet', 'Violet void'], ['emerald', 'Emerald signal'], ['ice', 'Arctic blue']]) themes.append(button(name, () => { preferences.theme = id; save(); }));
     const label = node('label', 'room-setting'); const checkbox = document.createElement('input'); checkbox.type = 'checkbox'; checkbox.checked = preferences.calm; checkbox.addEventListener('change', () => { preferences.calm = checkbox.checked; save(); }); label.append(checkbox, node('span', '', 'Quiet display — reduce motion, scanner effects, and ambient alerts'));
-    shell.append(themes, label, button('Bring windows back into view', () => { for (const record of manager.windows.values()) manager.clamp(record.element); status.textContent = 'Windows repositioned to fit your screen.'; }), node('p', 'room-description', 'Desktop icons open with one click. Double-click a window title to maximize it. Escape closes the app launcher.'), status);
+    shell.append(themes, label, button('Arrange desktop icons', () => { document.dispatchEvent(new CustomEvent('blackterm:arrange-desktop')); status.textContent = 'Desktop icons arranged.'; }), button('Bring windows back into view', () => { for (const record of manager.windows.values()) manager.clamp(record.element); status.textContent = 'Windows repositioned to fit your screen.'; }), node('p', 'room-description', 'Drag desktop icons anywhere; positions save in this browser. Alt + arrow keys moves a focused icon. Double-click a window title to maximize it. Escape closes the app launcher.'), status);
     return manager.open({ id: 'settings', title: 'Workstation Settings', content: shell, width: 660, height: 440 });
   }});
   const overlay = node('div', 'room-launcher hidden'); overlay.setAttribute('role', 'dialog'); overlay.setAttribute('aria-modal', 'true'); overlay.setAttribute('aria-label', 'App launcher');
@@ -101,7 +101,7 @@ export function installControlRoom({ apps, manager, api }) {
     if (!results.children.length) results.append(node('p', 'room-description', 'No apps found. Try “terminal” or “notes”.'));
     select(0);
   }
-  function open() { if (!document.querySelector('#desktop').classList.contains('os-ready')) return; previousFocus = document.activeElement; overlay.classList.remove('hidden'); search.value = ''; render(); search.focus(); }
+  function open() { if (!document.querySelector('#desktop').classList.contains('os-ready') || document.querySelector('#desktop').classList.contains('hidden')) return; previousFocus = document.activeElement; overlay.classList.remove('hidden'); search.value = ''; render(); search.focus(); }
   search.addEventListener('input', render);
   overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
   overlay.addEventListener('keydown', e => {

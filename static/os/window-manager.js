@@ -13,13 +13,18 @@ export class WindowManager {
     });
   }
 
+  area() {
+    return { width: this.layer.clientWidth || window.innerWidth, height: this.layer.clientHeight || window.innerHeight - 92 };
+  }
+
   clamp(element) {
-    const width = Math.min(parseFloat(element.style.width) || 760, Math.max(240, window.innerWidth - 16));
-    const height = Math.min(parseFloat(element.style.height) || 520, Math.max(180, window.innerHeight - 100));
+    const area = this.area();
+    const width = Math.min(parseFloat(element.style.width) || 760, Math.max(200, area.width - 16));
+    const height = Math.min(parseFloat(element.style.height) || 520, Math.max(160, area.height - 16));
     element.style.width = `${width}px`;
     element.style.height = `${height}px`;
-    element.style.left = `${Math.max(8, Math.min(parseFloat(element.style.left) || 8, window.innerWidth - width - 8))}px`;
-    element.style.top = `${Math.max(52, Math.min(parseFloat(element.style.top) || 52, window.innerHeight - height - 48))}px`;
+    element.style.left = `${Math.max(8, Math.min(parseFloat(element.style.left) || 8, area.width - width - 8))}px`;
+    element.style.top = `${Math.max(8, Math.min(parseFloat(element.style.top) || 8, area.height - height - 8))}px`;
   }
 
   loadLayouts() {
@@ -267,10 +272,10 @@ export class WindowManager {
 
     handle.addEventListener("pointermove", (event) => {
       if (!handle.hasPointerCapture(event.pointerId)) return;
-      const maxX = Math.max(0, window.innerWidth - element.offsetWidth);
-      const maxY = Math.max(42, window.innerHeight - element.offsetHeight - 42);
+      const maxX = Math.max(0, this.area().width - element.offsetWidth);
+      const maxY = Math.max(0, this.area().height - element.offsetHeight);
       element.style.left = `${Math.max(0, Math.min(maxX, originX + event.clientX - startX))}px`;
-      element.style.top = `${Math.max(42, Math.min(maxY, originY + event.clientY - startY))}px`;
+      element.style.top = `${Math.max(0, Math.min(maxY, originY + event.clientY - startY))}px`;
     });
 
     handle.addEventListener("pointerup", () => this.saveLayout(record));
@@ -295,8 +300,8 @@ export class WindowManager {
 
     handle.addEventListener("pointermove", (event) => {
       if (!handle.hasPointerCapture(event.pointerId)) return;
-      element.style.width = `${Math.min(window.innerWidth - element.offsetLeft - 8, Math.max(Math.min(420, window.innerWidth - 16), width + event.clientX - startX))}px`;
-      element.style.height = `${Math.min(window.innerHeight - element.offsetTop - 48, Math.max(180, height + event.clientY - startY))}px`;
+      element.style.width = `${Math.min(this.area().width - element.offsetLeft - 8, Math.max(Math.min(420, window.innerWidth - 16), width + event.clientX - startX))}px`;
+      element.style.height = `${Math.min(this.area().height - element.offsetTop - 8, Math.max(180, height + event.clientY - startY))}px`;
     });
 
     handle.addEventListener("pointerup", () => this.saveLayout(record));

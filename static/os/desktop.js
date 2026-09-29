@@ -1,3 +1,4 @@
+import { mountDesktopLayout } from "./desktop-layout.js";
 import { installControlRoom } from "./control-room.js";
 import { WindowManager } from "./window-manager.js";
 import { AppRegistry } from "./apps.js";
@@ -370,7 +371,7 @@ export async function mountDesktop(api) {
 
 
     button.addEventListener("click", () => {
-      if (!desktop.classList.contains("os-ready")) return;
+      if (!desktop.classList.contains("os-ready") || button.dataset.suppressOpen === "true") return;
       if (button.closest("#start-menu") || button.closest("#desktop-icons")) {
         apps.open(button.dataset.openApp);
         startMenu.classList.add("hidden");
@@ -408,17 +409,19 @@ export async function mountDesktop(api) {
   for (const file of desktopFiles) {
     const button = document.createElement("button");
     button.className = "desktop-icon story-file-icon startup-item";
+    button.dataset.desktopFile = file.name;
     const glyph = document.createElement("span"); glyph.className = "icon-glyph"; glyph.textContent = "▤";
-    const name = document.createElement("strong"); name.textContent = file.name;
+    const name = document.createElement("strong"); name.textContent = file.name.replaceAll("_", " ").replace(/\.[^.]+$/, "");
     button.append(glyph, name);
     button.addEventListener("click", () => {
-      if (!desktop.classList.contains("os-ready")) return;
+      if (!desktop.classList.contains("os-ready") || button.dataset.suppressOpen === "true") return;
       apps.openTextFile?.(file.name, file.content);
     });
     desktopIcons.appendChild(button);
     storyIcons.push(button);
   }
 
+  mountDesktopLayout(desktopIcons);
   mountAmbientNotifications();
   mountScannerIllumination();
   await applyLivingWorldState(api);
@@ -426,7 +429,7 @@ export async function mountDesktop(api) {
     desktop.classList.remove("os-startup-pending", "os-booting");
     desktop.classList.add("os-ready");
     document.querySelectorAll(".desktop-icon, .os-topbar, .taskbar, .desktop-wallpaper, .os-system-state > span, .os-user").forEach(el => el.classList.add("startup-revealed", "startup-received"));
-    apps.open("mission");
+    // Leave the desktop clear; apps open when the observer chooses.
   } else { await runDesktopBootstrap({ api, apps, desktop, storyIcons }); }
 
   return { manager, apps };

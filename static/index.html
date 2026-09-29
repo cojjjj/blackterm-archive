@@ -20,6 +20,7 @@
   <link rel="stylesheet" href="/static/styles.css">
   <link rel="stylesheet" href="/static/os/os.css">
   <link rel="stylesheet" href="/static/os/control-room.css">
+  <link rel="stylesheet" href="/static/os/desktop-v3.css">
 </head>
 <body>
   <div id="crt-poweron" class="crt-poweron hidden" aria-hidden="true">
@@ -39,16 +40,38 @@
     </div>
   </section>
 
-  <section id="gate" class="os-gate">
-    <div class="os-gate-card">
-      <p class="eyebrow">BLACKTERM NETWORK</p>
-      <h1>BLACKTERM <span>// OS</span></h1>
-      <div class="gate-classification">CLASSIFIED // OBSERVER ACCESS</div><p>&gt; A signal survived. Follow it.</p>
-      <p class="os-muted">Observation is the first key. Identity is the second.</p>
-      <button id="begin-button">ENTER THE ARCHIVE →</button>
-      <p class="gate-caption">DECODE SIGNALS · RECOVER EVIDENCE · CONNECT THE TRUTH</p>
-      <label class="gate-fast"><input id="fast-boot" type="checkbox" checked> Fast startup</label>
+  <section id="gate" class="os-gate archive-entrance" aria-label="Enter the Archive">
+    <div class="entrance-grid" aria-hidden="true"></div>
+    <div class="entrance-header"><span>BLACKTERM NETWORK</span><span>RECOVERED SYSTEM / 03</span></div>
+    <div class="entrance-copy">
+      <p class="entrance-kicker">A SIGNAL SURVIVED.</p>
+      <h1>Some things<br>stay <em>buried.</em></h1>
+      <p class="entrance-description">A recovered workstation. A fractured network.<br>One observer to connect the truth.</p>
+      <button id="begin-button" class="entrance-open">OPEN THE ARCHIVE <span>↗</span></button>
+      <div id="gate-identity" class="entrance-identity">UNIDENTIFIED OBSERVER / AWAITING CONNECTION</div>
+      <label class="gate-fast"><input id="fast-boot" type="checkbox"> Skip cinematic sequence</label>
       <p id="gate-error" role="alert"></p>
+    </div>
+    <div class="entrance-portal" aria-hidden="true">
+      <div class="portal-halo"></div><div class="portal-ring portal-ring-outer"></div><div class="portal-ring portal-ring-inner"></div>
+      <div class="portal-crosshair"></div>
+      <div class="portal-core"><span>BT</span><small>THE ARCHIVE</small></div>
+      <span class="portal-coordinate coord-one">RELAY / R-07</span><span class="portal-coordinate coord-two">SIGNAL: UNKNOWN</span>
+      <div class="portal-orbit-dot"></div>
+    </div>
+    <div class="entrance-footer"><span>OBSERVE / DECODE / RECOVER</span><span>THE MACHINE REMEMBERS.</span></div>
+  </section>
+
+  <section id="transmission-boot" class="transmission-boot hidden" role="dialog" aria-modal="true" aria-label="Connecting to the Archive">
+    <div class="transmission-lines" aria-hidden="true"></div>
+    <div class="transmission-circuit" aria-hidden="true"><i></i><i></i><i></i><i></i><div class="transmission-emblem">BT</div></div>
+    <div class="transmission-copy">
+      <p>BLACKTERM // SECURE OBSERVER CHANNEL</p>
+      <h2 id="transmission-stage" aria-live="polite">ACQUIRING SIGNAL</h2>
+      <span id="transmission-detail">Opening the observer channel</span>
+      <div class="transmission-meter"><i id="transmission-progress"></i></div>
+      <div class="transmission-readout"><span>CHANNEL INITIALIZATION</span><strong id="transmission-percent">0%</strong></div>
+      <button id="transmission-skip">Skip sequence →</button>
     </div>
   </section>
 
@@ -112,7 +135,7 @@
       </div>
     </header>
 
-    <section id="desktop-icons" class="desktop-icons">
+    <section id="desktop-icons" class="desktop-icons" aria-label="Movable desktop shortcuts">
       <button class="desktop-icon" data-open-app="mission"><span class="icon-glyph">◈</span><strong>Mission Control</strong></button>
       <button class="desktop-icon" data-open-app="notebook"><span class="icon-glyph">✎</span><strong>Notebook</strong></button>
       <button class="desktop-icon" data-open-app="settings"><span class="icon-glyph">⚙</span><strong>Settings</strong></button>
@@ -167,6 +190,7 @@
 
     </section>
 
+    <div class="desktop-layout-hint"><span>BLACKTERM WORKSPACE</span><small id="desktop-layout-status" aria-live="polite">Drag icons to arrange your desktop · Ctrl K to launch</small></div>
     <section id="window-layer" class="window-layer"></section>
     <aside id="toast-layer" class="toast-layer" aria-live="polite"></aside>
 

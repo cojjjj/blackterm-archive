@@ -1,4 +1,5 @@
-import { runBoot, mountLivingArchive } from "./living/living.js";
+import { openArchive } from "./os/entrance.js";
+import { mountLivingArchive } from "./living/living.js";
 import { mountDesktop } from "./os/desktop.js";
 
 console.log("%cBLACKTERM OS // THE ARCHIVE", "color:#6bff97;font-size:18px;font-weight:bold;");
@@ -45,16 +46,12 @@ let mounted = false;
 async function startOs() {
   if (mounted) return;
   mounted = true;
-  gate.classList.add("hidden");
-  if (document.querySelector("#fast-boot").checked) {
+  await openArchive(async () => {
+    await ensureSession();
     document.documentElement.dataset.fastBoot = "true";
-  } else {
-    document.documentElement.dataset.fastBoot = "false";
-    await runBoot(api);
-  }
-  desktop.classList.remove("hidden");
-  await mountDesktop(api);
-  mountLivingArchive(api);
+    await mountDesktop(api);
+    mountLivingArchive(api);
+  }, { skipAnimation: document.querySelector("#fast-boot").checked });
 }
 
 beginButton.addEventListener("click", async () => {
@@ -62,7 +59,6 @@ beginButton.addEventListener("click", async () => {
   beginButton.textContent = "INITIALIZING...";
   document.querySelector("#gate-error").textContent = "";
   try {
-    await ensureSession();
     await startOs();
   } catch (error) {
     mounted = false;
@@ -75,15 +71,7 @@ beginButton.addEventListener("click", async () => {
   }
 });
 
-(async () => {
-  try {
-    await api("/api/me");
-    document.documentElement.dataset.fastBoot = "true";
-    await startOs();
-  } catch {
-    mounted = false;
-    gate.classList.remove("hidden");
-    desktop.classList.add("hidden");
-    // New observers remain at the power gate.
-  }
-})();
+// Every visit starts at the entrance; existing observers keep their cookie identity.
+api("/api/me").then(me => {
+  document.querySelector("#gate-identity").textContent = `OBSERVER ${me.codename} / SESSION FOUND`;
+}).catch(() => {});
