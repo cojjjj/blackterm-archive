@@ -855,8 +855,38 @@ def get_player(request: Request) -> sqlite3.Row:
 
     with db() as connection:
         player = connection.execute(
-            "SELECT * FROM players WHERE token = ?", (token,)
+            "SELECT * FROM players WHERE token = ?",
+            (token,),
         ).fetchone()
+
+        # Recreate a deterministic local identity when a valid Vercel
+        # session cookie reaches a new temporary function instance.
+        if not player and IS_VERCEL:
+            identity_number = (
+                int(
+                    hashlib.sha256(
+                        token.encode("utf-8")
+                    ).hexdigest()[:8],
+                    16,
+                )
+                % 90000
+                + 10000
+            )
+
+            codename = f"OBS-{identity_number}"
+
+            connection.execute(
+                """
+                INSERT OR IGNORE INTO players (token, codename)
+                VALUES (?, ?)
+                """,
+                (token, codename),
+            )
+
+            player = connection.execute(
+                "SELECT * FROM players WHERE token = ?",
+                (token,),
+            ).fetchone()
 
     if not player:
         raise HTTPException(status_code=401, detail="Identity rejected.")
