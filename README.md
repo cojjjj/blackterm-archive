@@ -1,3 +1,5 @@
+> **Recruitment Mode added:** optional developer auditions, candidate-specific Python projects, GitHub submissions, private reviewer dashboard, and hosted PostgreSQL candidate records. Read [RECRUITMENT.md](RECRUITMENT.md) for Vercel setup and the review workflow.
+
 # THE ARCHIVE // 001
 
 A terminal-style, Cicada-inspired puzzle platform built as a safe cybersecurity and puzzle-solving experience.

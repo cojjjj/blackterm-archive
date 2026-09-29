@@ -1968,3 +1968,8 @@ def system_status() -> dict[str, Any]:
         "progress_persistent": not IS_VERCEL,
         "admin_configured": bool(ADMIN_KEY),
     }
+
+
+# Candidate identities and reviews use separate persistent recruitment storage.
+from app.recruitment import attach_recruitment
+recruitment_store = attach_recruitment(app, STORAGE_ROOT, IS_VERCEL, require_admin_cookie)

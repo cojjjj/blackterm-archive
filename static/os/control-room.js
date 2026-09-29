@@ -91,7 +91,13 @@ export function installControlRoom({ apps, manager, api }) {
   const card = node('div', 'launcher-card');
   const search = document.createElement('input'); search.type = 'search'; search.placeholder = 'Find an app or tool…'; search.setAttribute('aria-label', 'Search apps');
   const results = node('div', 'launcher-results');
-  const labels = { mission: 'Mission Control', notebook: 'Investigation Notebook', settings: 'Workstation Settings', archive: 'Archive', terminal: 'Terminal', explorer: 'File Explorer', mail: 'Mail', processes: 'Process Monitor', relay: 'Relay Monitor', worldmap: 'World Map', knowledge: 'Knowledge Base', editor: 'Puzzle Editor', audio: 'Audio Console', images: 'Image Viewer', hex: 'Hex Viewer', logs: 'Logs', generator: 'Investigation Generator', search: 'Search Index' };
+  apps.register('recruitment', { open: () => {
+    const frame = document.createElement('iframe');
+    frame.src = '/recruitment'; frame.title = 'Developer Audition';
+    frame.style.cssText = 'border:0;width:100%;height:100%;background:#0b0c16;';
+    return manager.open({ id: 'recruitment', title: 'Developer Audition', content: frame, width: 1020, height: 740 });
+  }});
+  const labels = { recruitment: 'Developer Audition', mission: 'Mission Control', notebook: 'Investigation Notebook', settings: 'Workstation Settings', archive: 'Archive', terminal: 'Terminal', explorer: 'File Explorer', mail: 'Mail', processes: 'Process Monitor', relay: 'Relay Monitor', worldmap: 'World Map', knowledge: 'Knowledge Base', editor: 'Puzzle Editor', audio: 'Audio Console', images: 'Image Viewer', hex: 'Hex Viewer', logs: 'Logs', generator: 'Investigation Generator', search: 'Search Index' };
   let previousFocus, active = 0;
   function close() { overlay.classList.add('hidden'); previousFocus?.focus(); }
   function select(index) { const buttons = [...results.querySelectorAll('button')]; active = Math.max(0, Math.min(index, buttons.length - 1)); buttons.forEach((el, i) => el.classList.toggle('selected', i === active)); buttons[active]?.scrollIntoView({ block: 'nearest' }); }

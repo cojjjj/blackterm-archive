@@ -1,41 +1,13 @@
-# BLACKTERM // THE ARCHIVE — Desktop v3
+# BLACKTERM // Recruitment update
 
-This patch installs over the Control Room update you already uploaded.
+This ZIP contains changed/new files, including the prior desktop improvements.
 
-## Upload to your existing Vercel-connected repository
+Upload all extracted files and folders to your repository root and commit to `main`. Your Vercel integration can redeploy the update. Do not upload the ZIP itself.
 
-1. Extract `blackterm-archive-desktop-v3-updated-files.zip`.
-2. Open https://github.com/cojjjj/blackterm-archive/upload/main .
-3. Drag the extracted `static` folder and `UPGRADE.md` into the upload area together. Upload their contents at the repository root; do not upload the ZIP or its outer folder.
-4. Commit to `main` with message `Add movable desktop and cinematic Archive entrance`.
-5. Let your connected Vercel project redeploy. Refresh the site afterward.
+**Read RECRUITMENT.md before inviting candidates.** Production recruitment needs `RECRUIT_DATABASE_URL` (or `DATABASE_URL`) and `ARCHIVE_ADMIN_KEY` in Vercel, followed by a redeploy. Recruitment stays closed until its hosted database is reachable. Regular Archive play continues to work.
 
-No backend, dependency, environment variable, or Vercel entrypoint changes are needed for this patch.
+Added: five-stage developer audition, candidate-specific project downloads, recovery codes, GitHub submission forms with pinned commit SHA, 12-method reviewer test kits, admin candidate dashboard, weighted human-review rubric, private notes, candidate deletion, and hosted PostgreSQL recruitment storage.
 
-## Desktop
+The Archive desktop retains movable icons, saved layouts, movable app windows, the cinematic entrance, and Ctrl+K app search. Open **Dev Audition** or share `/recruitment`. Reviewers use `/recruitment/review`.
 
-The old left shortcut shelf is replaced by a free-position desktop. Apps and recovered files start in rows across the workspace. Drag shortcuts anywhere; their positions and overlap order save in the browser. Dragging does not launch the app. Click to open it after dropping.
-
-App windows remain movable by their title bars. Double-click a title bar to maximize; the window controls minimize and close. Window bounds now use the actual usable desktop area.
-
-For keyboard movement, focus a shortcut and hold Alt while pressing an arrow key. Alt+Shift+arrow moves farther. In Settings, choose **Arrange desktop icons** to reset the layout. Phones have a scrollable workspace to reach every icon.
-
-The desktop starts clear instead of immediately opening Mission Control. Ctrl+K / Cmd+K opens the searchable launcher.
-
-## Entrance
-
-Every visit starts at the new Archive entrance, including returning visitors. Existing observer cookies and notebook data are preserved.
-
-The Open the Archive button starts animated relay rings, signal acquisition, decode, observer verification, and an access-granted transition into the desktop. The cinematic takes about six seconds; real session and desktop preparation run alongside it. If preparation takes longer, the entrance waits for the server. The progress bar represents the entrance sequence, not a network transfer.
-
-Choose **Skip cinematic sequence**, press Escape during the sequence, or use **Skip sequence** to shorten the animation. Skipping still waits for actual preparation. Reduced-motion and quiet-display preferences automatically shorten it. Failed requests return to the entrance with a retry button.
-
-## Validation
-
-Headless Chromium checks passed for the cinematic boot, clear desktop, icon dragging without accidental launches, position persistence after reload, title-bar window movement, layout reset, mobile scrolling and window bounds. No page errors occurred. Failure/retry and reduced-motion startup were tested separately.
-
-Desktop and mobile screenshots were rendered and inspected. All JavaScript module syntax checks passed.
-
-## Storage
-
-Shortcut positions, notebook, and preferences save in this browser. Clearing browser data removes them. Vercel server puzzle progress remains temporary under the existing SQLite architecture; this patch does not add durable cloud storage.
+The website does not execute candidate code or choose hires automatically. Ordinary Archive game progress retains its existing storage behavior.
